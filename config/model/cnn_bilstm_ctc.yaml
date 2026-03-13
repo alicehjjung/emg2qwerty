@@ -1,0 +1,15 @@
+# @package _global_
+module:
+  _target_: emg2qwerty.lightning.CNNBiLSTMCTCModule
+  in_features: 528
+  mlp_features: [384]
+  block_channels: [24, 24, 24, 24]
+  kernel_width: 32
+  hidden_size: 256
+  num_layers: 2
+  dropout: 0.2
+
+datamodule:
+  _target_: emg2qwerty.lightning.WindowedEMGDataModule
+  window_length: 8000
+  padding: [1800, 200]
