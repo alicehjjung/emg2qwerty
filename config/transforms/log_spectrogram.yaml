@@ -3,6 +3,10 @@ to_tensor:
   _target_: emg2qwerty.transforms.ToTensor
   fields: [emg_left, emg_right]
 
+electrode_subsample:
+  _target_: emg2qwerty.transforms.ElectrodeSubsample
+  target_electrodes: 16
+
 band_rotation:
   _target_: emg2qwerty.transforms.ForEach  # i.i.d rotation offset for each band
   transform:

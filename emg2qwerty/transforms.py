@@ -43,6 +43,22 @@ class ToTensor:
 
 
 @dataclass
+class ElectrodeSubsample:
+    target_electrodes: int
+    total_electrodes: int = 16
+
+    def __post_init__(self):
+        if self.target_electrodes > self.total_electrodes:
+            raise ValueError("target_electrodes cannot exceed total_electrodes")
+        self.indices = np.linspace(
+            0, self.total_electrodes - 1, self.target_electrodes, dtype=int
+        )
+
+    def __call__(self, tensor: torch.Tensor) -> torch.Tensor:
+        return tensor[..., self.indices]
+
+
+@dataclass
 class Lambda:
     """Applies a custom lambda function as a transform.
 
@@ -280,7 +296,7 @@ class AmplitudeScaling:
 @dataclass
 class ChannelDropout:
     """Randomly zeros out electrode channels with probability p_drop
-    
+
     Args:
         p_drop: probability of dropping a channel
     """

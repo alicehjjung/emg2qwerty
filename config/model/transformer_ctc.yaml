@@ -1,11 +1,13 @@
 # @package _global_
 module:
-  _target_: emg2qwerty.lightning.BiLSTMCTCModule
+  _target_: emg2qwerty.transformer.TransformerCTCModule
   in_features: 528
   mlp_features: [384]
-  hidden_size: 256
+  d_model: 256
+  nhead: 4
   num_layers: 2
-  dropout: 0.2
+  dim_feedforward: 512
+  dropout: 0.1
 
 datamodule:
   _target_: emg2qwerty.lightning.WindowedEMGDataModule
