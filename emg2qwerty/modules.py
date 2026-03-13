@@ -318,3 +318,24 @@ class CNNBiLSTMEncoder(nn.Module):
         x = self.cnn(x)
         out, _ = self.lstm(x)
         return self.classifier(out)
+
+
+class BiLSTMEncoder(nn.Module):
+    def __init__(self, num_features, hidden_size, num_layers, num_classes, dropout=0.2):
+        super().__init__()
+
+        self.lstm = nn.LSTM(
+            input_size=num_features,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            dropout=dropout if num_layers > 1 else 0,
+            bidirectional=True,
+            batch_first=False,
+        )
+
+        self.classifier = nn.Linear(hidden_size * 2, num_classes)
+
+    def forward(self, x):
+        # x: (T, N, num_features)
+        out, _ = self.lstm(x)
+        return self.classifier(out)
